@@ -1,26 +1,115 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+interface data {
+  val: string;
+  status: string;
+  id: number;
+}
+interface dataObj {
+  val: string;
+  status: string;
+  id: number;
+  completeIt: (id: number) => void;
+}
+const App = () => {
+  const [val, setVal] = React.useState<string>("");
+  const [data, setData] = React.useState<data[]>([
+    { val: "", status: "", id: 0 },
+  ]);
 
-function App() {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setVal(e.currentTarget.value);
+  };
+  const addVal = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    if (val && val.length > 0) {
+      let dataIns = { val: val, status: "pending", id: Math.random() * 1000 };
+      setData([...data, dataIns]);
+      setVal("");
+    } else {
+      alert("Alert: Please add some value first");
+    }
+  };
+  const completeIt = (id: number) => {
+    const dataSet: data[] = [...data];
+    let index: number = 0;
+    dataSet.find((el, ind) => {
+      if (el.id === id) {
+        index = ind;
+        return el;
+      }
+    });
+    console.log(index);
+    dataSet[index].status = dataSet[index].status === "completed"?"pending":"completed";
+    setData(dataSet);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="form-flex">
+        <input
+          className="input"
+          placeholder="Add some tasks ?"
+          type="text"
+          value={val}
+          onChange={handleChange}
+        />
+        <button className="btn" onClick={addVal}>
+          Add
+        </button>
+      </div>
+      <div className="tasks-list">
+        <div>
+          {data.map((el) => {
+            if (el.val && el.val.length > 0)
+              return (
+                <CompletedTasks
+                  key={el.id}
+                  id={el.id}
+                  status={el.status}
+                  val={el.val}
+                  completeIt={completeIt}
+                />
+              );
+          })}
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+const CompletedTasks: React.FC<dataObj> = (data) => {
+  const completeIt = () => {
+    data.completeIt(data.id);
+  };
+  return (
+
+      <div
+        className="completed-tasks"
+        status-prop={data.status}
+        id-prop={data.id}
+      >
+        <div
+          style={
+            data.status !== "pending"
+              ? { textDecoration: "line-through", width: "28vw" }
+              : { width: "28vw" }
+          }
+        >
+          {data.val}
+        </div>
+        <button
+          style={{width: "9vw",border:"none",outline:"none"}}
+          className="close"
+          onClick={completeIt}
+        >
+          {
+            data.status === 'pending'?
+            "Mark As Complete":
+            "Mark As Incomplete"
+          }
+        </button>
+      </div>
+
+  );
+};
 
 export default App;
