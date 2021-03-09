@@ -2,32 +2,34 @@
   /* text-align: center; */
 
   width: 40vw;
-  min-width: 300px;
-  margin: 20px auto;
+  min-width: 450px;
+  margin: 75px auto 20px auto;
 }
 .completed-tasks {
   height: 40px;
-  width: 40vw;
+
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.459);
   box-sizing: border-box;
-
   align-items: center;
   margin: 20px 0;
+
 }
-.close{
+.close {
   font-size: 12px;
   background-color: red;
   color: white;
   padding: 5px;
   cursor: pointer;
+  min-width: 120px;
 }
 
 .form-flex {
   display: flex;
   justify-content: space-between;
+  min-width: 450px;
 }
 
 .input {
@@ -48,6 +50,23 @@
   cursor: pointer;
 }
 
-.tasks-list{
-  margin-top: 20px;
+.tasks-list {
+  margin-top: 50px;
+  box-shadow: 2px 2px 2px #eee;
+  padding: 20px;
+  width: 40vw;
+  min-width: 450px;
+  box-sizing: border-box;
+}
+
+.header {
+  min-width: 450px;
+  height: 50px;
+  background-color: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  box-sizing: border-box;
+  padding: 20px;
 }

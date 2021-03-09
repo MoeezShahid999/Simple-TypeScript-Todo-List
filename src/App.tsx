@@ -38,39 +38,44 @@ const App = () => {
         return el;
       }
     });
-    console.log(index);
-    dataSet[index].status = dataSet[index].status === "completed"?"pending":"completed";
+
+    dataSet[index].status =
+      dataSet[index].status === "completed" ? "pending" : "completed";
     setData(dataSet);
   };
+  console.log(data)
   return (
-    <div className="App">
-      <div className="form-flex">
-        <input
-          className="input"
-          placeholder="Add some tasks ?"
-          type="text"
-          value={val}
-          onChange={handleChange}
-        />
-        <button className="btn" onClick={addVal}>
-          Add
-        </button>
-      </div>
-      <div className="tasks-list">
-        <div>
-          {data.map((el) => {
-            if (el.val && el.val.length > 0)
-              return (
-                <CompletedTasks
-                  key={el.id}
-                  id={el.id}
-                  status={el.status}
-                  val={el.val}
-                  completeIt={completeIt}
-                />
-              );
-          })}
+    <div>
+      <Header />
+      <div className="App">
+        <div className="form-flex">
+          <input
+            className="input"
+            placeholder="Add some tasks ?"
+            type="text"
+            value={val}
+            onChange={handleChange}
+          />
+          <button className="btn" onClick={addVal}>
+            Add
+          </button>
         </div>
+        {(data.length > 1 ) ? (
+          <div className="tasks-list">
+            {data.map((el) => {
+              if (el.val && el.val.length > 0)
+                return (
+                  <CompletedTasks
+                    key={el.id}
+                    id={el.id}
+                    status={el.status}
+                    val={el.val}
+                    completeIt={completeIt}
+                  />
+                );
+            })}
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -80,36 +85,35 @@ const CompletedTasks: React.FC<dataObj> = (data) => {
   const completeIt = () => {
     data.completeIt(data.id);
   };
+  console.log(data)
   return (
-
+    <div
+      className="completed-tasks"
+      status-prop={data.status}
+      id-prop={data.id}
+    >
       <div
-        className="completed-tasks"
-        status-prop={data.status}
-        id-prop={data.id}
+        style={
+          data.status !== "pending"
+            ? { textDecoration: "line-through", width: "28vw" }
+            : { width: "28vw",minWidth:'300px' }
+        }
       >
-        <div
-          style={
-            data.status !== "pending"
-              ? { textDecoration: "line-through", width: "28vw" }
-              : { width: "28vw" }
-          }
-        >
-          {data.val}
-        </div>
-        <button
-          style={{width: "9vw",border:"none",outline:"none"}}
-          className="close"
-          onClick={completeIt}
-        >
-          {
-            data.status === 'pending'?
-            "Mark As Complete":
-            "Mark As Incomplete"
-          }
-        </button>
+        {data.val}
       </div>
-
+      <button
+        style={{ width: "9vw", border: "none", outline: "none" }}
+        className="close"
+        onClick={completeIt}
+      >
+        {data.status === "pending" ? "Mark As Complete" : "Mark As Incomplete"}
+      </button>
+    </div>
   );
+};
+
+const Header = () => {
+  return <div className="header">A simple Todo List in Typescript</div>;
 };
 
 export default App;
